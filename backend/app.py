@@ -169,15 +169,29 @@ def create_profile(user_id):
         )
         return redirect(url_for("dashboard"))
 
-# Search Profiles
+# Updated Search Profiles Route with additional filters
 @app.route("/search")
 def search():
-    query = request.args.get("q")
+    # Get the query text; if not provided, redirect to dashboard.
+    query = request.args.get("q", "").strip()
     if not query:
         return redirect(url_for("dashboard"))
-    results = ProfileModel.search_profiles(query)
+    # Get the search field (default "name") and order (default "desc")
+    field = request.args.get("field", "name")
+    order = request.args.get("order", "desc")
+    # Build the filter query for the specified field using a regex search
+    filter_query = { field: {"$regex": query, "$options": "i"} }
+    # Import the underlying db connection from the ProfileModel module
+    from models.profile_model import db
+    results = list(db.profiles.find(filter_query))
+    # Sort the results by the created_at field (assumes created_at exists on profiles)
+    if order == "asc":
+        results.sort(key=lambda p: p.get("created_at", datetime.datetime.min))
+    else:
+        results.sort(key=lambda p: p.get("created_at", datetime.datetime.min), reverse=True)
     return render_template("dashboard.html", profiles=results)
 
+# Profile Detail (Protected)
 @app.route("/profile/<profile_id>")
 @jwt_required
 def view_profile(user_id, profile_id):
@@ -185,7 +199,6 @@ def view_profile(user_id, profile_id):
     if not profile:
         return "Profile not found", 404
     return render_template("profile_detail.html", profile=profile)
-
 
 if __name__ == "__main__":
     app.run(debug=True)
