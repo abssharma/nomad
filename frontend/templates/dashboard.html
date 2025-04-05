@@ -9,27 +9,37 @@
 <body>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container-fluid">
-          <a class="navbar-brand" href="/">Nomad App</a>
-          <div class="collapse navbar-collapse">
-              <ul class="navbar-nav me-auto">
-                  <!-- Existing navigation links (if any) -->
-                  <li class="nav-item"><a class="nav-link" href="#" id="logoutLink">Logout</a></li>
+          
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                  aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav w-100 justify-content-around">
+                  <li class="nav-item"><a class="nav-link" href="/login">LOGIN</a></li>
+                  <li class="nav-item"><a class="nav-link" href="/register">REGISTER</a></li>
+                  <li class="nav-item"><a class="nav-link" href="/dashboard">DASHBOARD</a></li>
+                  <li class="nav-item"><a class="nav-link" href="/create-profile">CREATE PROFILE</a></li>
+                  <li class="nav-item"><a class="nav-link" href="#" id="logoutLink">LOGOUT</a></li>
               </ul>
           </div>
       </div>
   </nav>
   <div class="container mt-5">
-      <h2>Dashboard</h2>
+      <div class="text-center mb-4">
+          <h1 class="fw-bold">DASHBOARD VIEW</h1>
+      </div>
+      
       <!-- Updated Search Form -->
       <form method="GET" action="/search" class="mb-4">
-          <div class="input-group">
-              <input type="text" name="q" class="form-control" placeholder="Search..." required>
-              <select name="field" class="form-select">
+          <div class="input-group justify-content-center">
+              <input type="text" name="q" class="form-control mb-0" required>
+              <select name="field" class="form-select w-auto">
                   <option value="name">Name</option>
                   <option value="gender">Gender</option>
                   <option value="location">Location</option>
               </select>
-              <select name="order" class="form-select">
+              <select name="order" class="form-select w-auto">
                   <option value="desc">Recent to Past</option>
                   <option value="asc">Past to Recent</option>
               </select>
@@ -37,14 +47,15 @@
           </div>
       </form>
       
-      <!-- New Create Profile Button -->
-      <div class="mb-4">
-          <a href="/create-profile" class="btn btn-primary">Create Profile</a>
+      <!-- Create Profile Button -->
+      <div class="mb-4 text-center">
+          <a href="/create-profile" class="btn btn-primary btn-lg">CREATE PROFILE</a>
       </div>
       
-      <div id="profiles">
+      <div id="profiles" class="row">
           {% for profile in profiles %}
-          <div class="profile-card">
+          <div class="col-md-4">
+            <div class="profile-card mb-4">
               <h4>{{ profile.name }}</h4>
               <p>Age: {{ profile.age }}</p>
               <p>Gender: {{ profile.gender }}</p>
@@ -52,9 +63,10 @@
               <p>Description: {{ profile.description }}</p>
               {% if profile.image_path %}
                 <img src="{{ url_for('static', filename='uploads/' ~ profile.image_path|basename) }}"
-                     alt="Profile Image" style="max-width: 150px;">
+                     alt="Profile Image" style="max-width: 100%;">
               {% endif %}
-              <p><a href="/profile/{{ profile._id }}">View Details</a></p>
+              <p class="mt-2 text-center"><a href="/profile/{{ profile._id }}" class="btn btn-outline-primary btn-sm">View Details</a></p>
+            </div>
           </div>
           {% endfor %}
       </div>
