@@ -20,18 +20,25 @@
   </nav>
   <div class="container mt-5">
       <h2>Dashboard</h2>
+      <!-- New Search Form -->
+      <form method="GET" action="/search" class="mb-4">
+          <div class="input-group">
+              <input type="text" name="q" class="form-control" placeholder="Search by name" required>
+              <button class="btn btn-outline-secondary" type="submit">Search</button>
+          </div>
+      </form>
       <div id="profiles">
           {% for profile in profiles %}
           <div class="profile-card">
-              {% if profile.image_path %}
-                <img src="{{ url_for('static', filename='uploads/' ~ profile.image_path|basename) }}"
-                alt="Profile Image" style="max-width: 150px;">
-              {% endif %}
               <h4>{{ profile.name }}</h4>
               <p>Age: {{ profile.age }}</p>
               <p>Gender: {{ profile.gender }}</p>
               <p>Location: {{ profile.location }}</p>
               <p>Description: {{ profile.description }}</p>
+              {% if profile.image_path %}
+                <img src="{{ url_for('static', filename='uploads/' ~ profile.image_path|basename) }}"
+                     alt="Profile Image" style="max-width: 150px;">
+              {% endif %}
               <p><a href="/profile/{{ profile._id }}">View Details</a></p>
           </div>
           {% endfor %}
