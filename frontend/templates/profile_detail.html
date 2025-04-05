@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ profile.name }} - Details</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Leaflet CSS (no integrity/crossorigin) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css">
+    <style>
+      /* Ensure the map container is visible */
+      #map {
+        height: 400px;
+        margin-top: 20px;
+        border: 2px solid red; /* for debugging; remove if not needed */
+      }
+    </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+          <a class="navbar-brand" href="/">Nomad App</a>
+          <div class="collapse navbar-collapse">
+              <ul class="navbar-nav me-auto">
+                  <li class="nav-item"><a class="nav-link" href="/dashboard">Dashboard</a></li>
+                  <li class="nav-item"><a class="nav-link" href="#" id="logoutLink">Logout</a></li>
+              </ul>
+          </div>
+      </div>
+  </nav>
+  <div class="container mt-5">
+      <h2>{{ profile.name }}</h2>
+      <div class="profile-card">
+          <p><strong>Age:</strong> {{ profile.age }}</p>
+          <p><strong>Gender:</strong> {{ profile.gender }}</p>
+          <p><strong>Location:</strong> {{ profile.location }}</p>
+          <p><strong>Description:</strong> {{ profile.description }}</p>
+          {% if profile.created_at %}
+            <p><strong>Created At:</strong> {{ profile.created_at }}</p>
+          {% endif %}
+          {% if profile.image_path %}
+            <img src="{{ url_for('static', filename='uploads/' ~ profile.image_path|basename) }}"
+                 alt="Profile Image"
+                 style="max-width: 300px;">
+          {% endif %}
+          {% if profile.audio_path %}
+            <audio controls style="display:block; margin-top:10px;">
+              <source src="{{ url_for('static', filename='uploads/' ~ profile.audio_path|basename) }}" type="audio/mpeg">
+              Your browser does not support the audio element.
+            </audio>
+          {% endif %}
+          <!-- Map container -->
+          <div id="map"></div>
+      </div>
+  </div>
+
+  <script src="/static/js/app.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Leaflet JS (no integrity/crossorigin) -->
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+  <script>
+    // Parse latitude and longitude from the profile; if not set, default to empty string
+    let lat = parseFloat("{{ profile.lat or '' }}");
+    let lon = parseFloat("{{ profile.lon or '' }}");
+
+    // Use Jinja's 'default' to ensure we get at least an empty string for created_at
+    const createdAt = "{{ profile.created_at|default('') }}";
+
+    console.log("Parsed coordinates:", lat, lon, "Created at:", createdAt);
+
+    // Fallback: if coordinates are invalid or zero, use default coords (NYC)
+    if (isNaN(lat) || isNaN(lon) || (lat === 0 && lon === 0)) {
+      lat = 40.7128;
+      lon = -74.0060;
+      console.log("Using fallback coordinates:", lat, lon);
+    }
+
+    // Initialize the Leaflet map (Carto's light basemap)
+    const map = L.map('map').setView([lat, lon], 13);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      maxZoom: 19,
+      attribution: '© OpenStreetMap, © CartoDB'
+    }).addTo(map);
+
+    // Add a marker with a popup including the profile name and creation date
+    L.marker([lat, lon]).addTo(map)
+      .bindPopup("{{ profile.name }}<br>Created At: " + createdAt)
+      .openPopup();
+  </script>
+</body>
+</html>
