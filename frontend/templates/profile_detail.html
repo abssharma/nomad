@@ -31,17 +31,17 @@
   <div class="container mt-5">
       <h2>{{ profile.name }}</h2>
       <div class="profile-card">
+          {% if profile.image_path %}
+            <img src="{{ url_for('static', filename='uploads/' ~ profile.image_path|basename) }}"
+            alt="Profile Image"
+            style="max-width: 300px;">
+          {% endif %}
           <p><strong>Age:</strong> {{ profile.age }}</p>
           <p><strong>Gender:</strong> {{ profile.gender }}</p>
           <p><strong>Location:</strong> {{ profile.location }}</p>
           <p><strong>Description:</strong> {{ profile.description }}</p>
           {% if profile.created_at %}
             <p><strong>Created At:</strong> {{ profile.created_at }}</p>
-          {% endif %}
-          {% if profile.image_path %}
-            <img src="{{ url_for('static', filename='uploads/' ~ profile.image_path|basename) }}"
-                 alt="Profile Image"
-                 style="max-width: 300px;">
           {% endif %}
           {% if profile.audio_path %}
             <audio controls style="display:block; margin-top:10px;">
