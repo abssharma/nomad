@@ -2,6 +2,7 @@ import os
 import datetime
 import bcrypt
 import jwt
+import base64
 from flask import Flask, render_template, request, redirect, url_for, jsonify, make_response
 from werkzeug.utils import secure_filename
 from functools import wraps
@@ -16,11 +17,14 @@ BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 # Set paths for templates and static files (assumes frontend/templates & frontend/static)
 TEMPLATES_PATH = os.path.join(BASE_DIR, "frontend", "templates")
 STATIC_PATH = os.path.join(BASE_DIR, "frontend", "static")
+# Set a separate path for recordings (assumes frontend/recordings)
+RECORDINGS_PATH = os.path.join(BASE_DIR, "frontend", "recordings")
 
 # Debug prints (optional)
 print("BASE_DIR:", BASE_DIR)
 print("Templates path:", TEMPLATES_PATH)
 print("Static path:", STATIC_PATH)
+print("Recordings path:", RECORDINGS_PATH)
 
 # Create the Flask app with custom folders
 app = Flask(__name__, template_folder=TEMPLATES_PATH, static_folder=STATIC_PATH)
@@ -153,38 +157,59 @@ def create_profile(user_id):
             image_file.save(image_path)
 
         # Handle audio upload and transcription
-        audio_file = request.files.get("audio_file")
         audio_path = None
         transcription = None
-        if audio_file:
-            audio_filename = secure_filename(audio_file.filename)
-            audio_path = os.path.join(STATIC_PATH, "uploads", audio_filename)
-            audio_file.save(audio_path)
-            transcription = audio_service.transcribe_audio(audio_path)
-            if transcription:
-                description = f"{description}\n\n[Audio Transcription]: {transcription}"
+        # Check if recorded audio is sent via the hidden field
+        recorded_audio = request.form.get("recordedAudio")
+        if recorded_audio:
+            try:
+                if recorded_audio.startswith("data:"):
+                    header, encoded = recorded_audio.split(",", 1)
+                else:
+                    encoded = recorded_audio
+                audio_data = base64.b64decode(encoded)
+                unique_audio_filename = f"{user_id}-{int(datetime.datetime.utcnow().timestamp())}.webm"
+                audio_filename = secure_filename(unique_audio_filename)
+                os.makedirs(RECORDINGS_PATH, exist_ok=True)
+                audio_path = os.path.join(RECORDINGS_PATH, audio_filename)
+                with open(audio_path, "wb") as f:
+                    f.write(audio_data)
+                print("Saved recorded audio to:", audio_path)
+                transcription = audio_service.transcribe_audio(audio_path)
+                if transcription:
+                    description = f"{description}\n\n[Audio Transcription]: {transcription}"
+            except Exception as e:
+                print("Error processing recorded audio:", e)
+        else:
+            # Fall back: if a file was uploaded via the audio_file field
+            audio_file = request.files.get("audio_file")
+            if audio_file:
+                unique_audio_filename = f"{user_id}-{int(datetime.datetime.utcnow().timestamp())}.webm"
+                audio_filename = secure_filename(unique_audio_filename)
+                os.makedirs(RECORDINGS_PATH, exist_ok=True)
+                audio_path = os.path.join(RECORDINGS_PATH, audio_filename)
+                audio_file.save(audio_path)
+                transcription = audio_service.transcribe_audio(audio_path)
+                if transcription:
+                    description = f"{description}\n\n[Audio Transcription]: {transcription}"
 
         profile_id = ProfileModel.create_profile(
             user_id, name, age, gender, location, lat, lon, description, image_path, audio_path
         )
         return redirect(url_for("dashboard"))
 
-# Updated Search Profiles Route with additional filters
+# Search Profiles
 @app.route("/search")
 def search():
-    # Get the query text; if not provided, redirect to dashboard.
-    query = request.args.get("q", "").strip()
+    query = request.args.get("q")
     if not query:
         return redirect(url_for("dashboard"))
-    # Get the search field (default "name") and order (default "desc")
     field = request.args.get("field", "name")
     order = request.args.get("order", "desc")
-    # Build the filter query for the specified field using a regex search
     filter_query = { field: {"$regex": query, "$options": "i"} }
     # Import the underlying db connection from the ProfileModel module
     from models.profile_model import db
     results = list(db.profiles.find(filter_query))
-    # Sort the results by the created_at field (assumes created_at exists on profiles)
     if order == "asc":
         results.sort(key=lambda p: p.get("created_at", datetime.datetime.min))
     else:
