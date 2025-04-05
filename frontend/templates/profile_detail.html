@@ -10,8 +10,8 @@
     <style>
       /* Ensure the map container is visible */
       #map {
-        height: 400px;
-        width: 400px;
+        height: 275px;
+        width: 275px;
         border: 2px solid red; /* for debugging; remove if not needed */
       }
       /* Container for audio section with transcribe button positioned */
@@ -62,15 +62,16 @@
           </div>
           <hr>
           {% if profile.audio_path %}
-          <div class="mt-3 audio-container">
-            <p class="mb-1"><strong>Voice Recording:</strong></p>
-            <audio controls class="w-100">
-              <source src="{{ url_for('static', filename='uploads/' ~ profile.audio_path|basename) }}" type="audio/mpeg">
-              Your browser does not support the audio element.
-            </audio>
-            <button class="btn btn-outline-secondary transcribe-btn" type="button">Transcribe</button>
-          </div>
+            <div class="mt-3 audio-container">
+                <p class="mb-1"><strong>Voice Recording:</strong></p>
+                 <audio controls class="w-100">
+                    <source src="{{ url_for('static', filename='recordings/' ~ profile.audio_path|basename) }}" type="audio/webm">
+                    Your browser does not support the audio element.
+                </audio>
+                <button class="btn btn-outline-secondary transcribe-btn" type="button">Transcribe</button>
+            </div>
           {% endif %}
+
         </div>
       </div>
     </div>
