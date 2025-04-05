@@ -20,10 +20,19 @@
   </nav>
   <div class="container mt-5">
       <h2>Dashboard</h2>
-      <!-- New Search Form -->
+      <!-- Updated Search Form -->
       <form method="GET" action="/search" class="mb-4">
           <div class="input-group">
-              <input type="text" name="q" class="form-control" placeholder="Search by name" required>
+              <input type="text" name="q" class="form-control" placeholder="Search..." required>
+              <select name="field" class="form-select">
+                  <option value="name">Name</option>
+                  <option value="gender">Gender</option>
+                  <option value="location">Location</option>
+              </select>
+              <select name="order" class="form-select">
+                  <option value="desc">Recent to Past</option>
+                  <option value="asc">Past to Recent</option>
+              </select>
               <button class="btn btn-outline-secondary" type="submit">Search</button>
           </div>
       </form>
