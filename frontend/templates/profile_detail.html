@@ -10,18 +10,29 @@
     <style>
       /* Ensure the map container is visible */
       #map {
-        height: 275px;
-        width: 275px;
+        height: 250px;
+        width: 250px;
         border: 2px solid red; /* for debugging; remove if not needed */
       }
-      /* Container for audio section with transcribe button positioned */
+      /* Audio container styling */
       .audio-container {
         position: relative;
+        min-height: 100px;
       }
+      /* Transcribe button positioned at bottom right within the audio container */
       .transcribe-btn {
         position: absolute;
-        bottom: -50px;
-        right: 5px;
+        bottom: -300px;
+        right: -24px;
+      }
+      /* Styling for transcription display */
+      #transcriptionResult {
+        margin-top: 20px;
+        padding: 10px;
+        background: #f8f9fa;
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        font-family: monospace;
       }
     </style>
 </head>
@@ -62,16 +73,17 @@
           </div>
           <hr>
           {% if profile.audio_path %}
-            <div class="mt-3 audio-container">
-                <p class="mb-1"><strong>Voice Recording:</strong></p>
-                 <audio controls class="w-100">
-                    <source src="{{ url_for('static', filename='recordings/' ~ profile.audio_path|basename) }}" type="audio/webm">
-                    Your browser does not support the audio element.
-                </audio>
-                <button class="btn btn-outline-secondary transcribe-btn" type="button">Transcribe</button>
-            </div>
+          <div class="mt-3 audio-container">
+            <p class="mb-1"><strong>Voice Recording:</strong></p>
+            <audio controls class="w-100">
+              <source src="{{ url_for('static', filename='recordings/' ~ profile.audio_path|basename) }}" type="audio/webm">
+              Your browser does not support the audio element.
+            </audio>
+            <button class="btn btn-outline-secondary transcribe-btn" type="button" id="transcribeBtn">Transcribe</button>
+          </div>
           {% endif %}
-
+          <!-- Container to display the JSON transcription result -->
+          <div id="transcriptionResult"></div>
         </div>
       </div>
     </div>
@@ -109,6 +121,29 @@
     L.marker([lat, lon]).addTo(map)
       .bindPopup("{{ profile.name }}<br>Created At: " + createdAt)
       .openPopup();
+
+    // Attach a click event to the Transcribe button
+    document.addEventListener("DOMContentLoaded", function() {
+      const transcribeBtn = document.getElementById("transcribeBtn");
+      const transcriptionResult = document.getElementById("transcriptionResult");
+      if (transcribeBtn) {
+        transcribeBtn.addEventListener("click", function() {
+          fetch("/transcribe/{{ profile._id }}", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" }
+          })
+          .then(response => response.json())
+          .then(data => {
+            // Instead of an alert, display the JSON result on screen.
+            transcriptionResult.innerText = JSON.stringify(data, null, 2);
+          })
+          .catch(err => {
+            console.error("Error calling transcribe route:", err);
+            transcriptionResult.innerText = "Error occurred while transcribing.";
+          });
+        });
+      }
+    });
   </script>
 </body>
 </html>
