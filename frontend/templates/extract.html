@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Extracted Information for {{ profile._id }}</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .extract-card {
+      border: 1px solid #ced4da;
+      border-radius: 5px;
+      background-color: #f8f9fa;
+      padding: 20px;
+      margin-top: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .info-list {
+      list-style: none;
+      padding: 0;
+    }
+    .info-list li {
+      margin-bottom: 8px;
+    }
+    .extra-info {
+      margin-top: 10px;
+      font-family: monospace;
+      background: #e9ecef;
+      padding: 10px;
+      border-radius: 5px;
+    }
+    /* Square image styling */
+    .profile-img-square {
+      width: 250px;
+      height: 250px;
+      object-fit: cover;
+      border: 2px solid #dee2e6;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+          <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav w-100 justify-content-around">
+                  <li class="nav-item"><a class="nav-link" href="/dashboard">DASHBOARD</a></li>
+                  <li class="nav-item"><a class="nav-link" href="#" id="logoutLink">LOGOUT</a></li>
+              </ul>
+          </div>
+      </div>
+  </nav>
+  
+  <div class="container mt-5">
+    <div class="extract-card">
+      <div class="row align-items-center">
+        <!-- Left Column: Extracted Information -->
+        <div class="col-md-8">
+          
+          <ul class="info-list">
+            <li><strong>ID:</strong> {{ profile._id }}</li>
+            <li><strong>Age:</strong> {{ extracted_info.age }}</li>
+            <li><strong>Location:</strong> {{ extracted_info.location }}</li>
+            <li><strong>Gender:</strong> {{ extracted_info.gender }}</li>
+          </ul>
+          <div class="extra-info">
+            <p><strong>Medical Conditions:</strong> {{ extracted_info.extra_info.medical_conditions }}</p>
+            <p><strong>Possible Relatives:</strong> {{ extracted_info.extra_info.possible_relatives }}</p>
+            <p><strong>Problems/Concerns:</strong> {{ extracted_info.extra_info.problems_concerns }}</p>
+          </div>
+          <a href="/dashboard" class="btn btn-primary mt-3">Back to Dashboard</a>
+        </div>
+        <!-- Right Column: Square Profile Image -->
+        <div class="col-md-4 text-center">
+          {% if profile.image_path %}
+            <img src="{{ url_for('static', filename='uploads/' ~ profile.image_path|basename) }}"
+                 alt="Profile Image"
+                 class="profile-img-square">
+          {% else %}
+            <img src="/static/img/default-profile.png" alt="Default Profile" class="profile-img-square">
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script src="/static/js/app.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
