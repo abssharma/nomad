@@ -12,7 +12,7 @@
           <a class="navbar-brand" href="/">Nomad App</a>
           <div class="collapse navbar-collapse">
               <ul class="navbar-nav me-auto">
-                  <li class="nav-item"><a class="nav-link" href="/create-profile">Create Profile</a></li>
+                  <!-- Existing navigation links (if any) -->
                   <li class="nav-item"><a class="nav-link" href="#" id="logoutLink">Logout</a></li>
               </ul>
           </div>
@@ -36,6 +36,12 @@
               <button class="btn btn-outline-secondary" type="submit">Search</button>
           </div>
       </form>
+      
+      <!-- New Create Profile Button -->
+      <div class="mb-4">
+          <a href="/create-profile" class="btn btn-primary">Create Profile</a>
+      </div>
+      
       <div id="profiles">
           {% for profile in profiles %}
           <div class="profile-card">
