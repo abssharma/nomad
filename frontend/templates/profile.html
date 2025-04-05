@@ -9,7 +9,6 @@
 <body>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container-fluid">
-        
           <div class="collapse navbar-collapse" id="navbarNav">
               <ul class="navbar-nav w-100 justify-content-around">
                   <li class="nav-item"><a class="nav-link" href="/dashboard">DASHBOARD</a></li>
@@ -22,49 +21,97 @@
     <div class="text-center mb-4">
         <h1 class="fw-bold">CREATE PROFILE VIEW</h1>
     </div>    
-
       <div id="alert" class="alert d-none"></div>
       <form id="profileForm" enctype="multipart/form-data" method="POST" action="/create-profile">
-          <div class="mb-3">
-              <label for="name" class="form-label">Name</label>
-              <input type="text" class="form-control" id="name" name="name" required>
-          </div>
-          <div class="mb-3">
-              <label for="age" class="form-label">Age</label>
-              <input type="number" class="form-control" id="age" name="age" required>
-          </div>
-          <div class="mb-3">
-              <label for="gender" class="form-label">Gender</label>
-              <input type="text" class="form-control" id="gender" name="gender" required>
-          </div>
-          <div class="mb-3">
-              <label for="location" class="form-label">Location</label>
-              <input type="text" class="form-control" id="location" name="location" required>
-          </div>
-          <div class="mb-3">
-              <label for="lat" class="form-label">Latitude</label>
-              <input type="text" class="form-control" id="lat" name="lat">
-          </div>
-          <div class="mb-3">
-              <label for="lon" class="form-label">Longitude</label>
-              <input type="text" class="form-control" id="lon" name="lon">
-          </div>
-          <div class="mb-3">
-              <label for="description" class="form-label">Description</label>
-              <textarea class="form-control" id="description" name="description"></textarea>
-          </div>
           <div class="mb-3">
               <label for="image_file" class="form-label">Image Upload</label>
               <input type="file" class="form-control" id="image_file" name="image_file" accept="image/*">
           </div>
-          <div class="mb-3">
-              <label for="audio_file" class="form-label">Audio Upload</label>
-              <input type="file" class="form-control" id="audio_file" name="audio_file" accept="audio/*">
+          <!-- Updated: Voice recorder and geolocation aligned horizontally -->
+          <div class="mb-3 d-flex justify-content-around align-items-center">
+              <div>
+                  <button type="button" id="recordButton" class="btn btn-secondary me-2">Hold to Record</button>
+                  <!-- Hidden field to store the recorded audio data (Base64 string) -->
+                  <input type="hidden" id="recordedAudio" name="recordedAudio">
+              </div>
+              <div class = "text-center">
+                <button type="submit" class="btn btn-primary">DONE</button>
+              </div>
+              <div>
+                  <button type="button" id="geoButton" class="btn btn-secondary me-2">Current Location</button>
+                  <!-- Hidden fields to store latitude and longitude -->
+                  <input type="hidden" id="lat" name="lat">
+                  <input type="hidden" id="lon" name="lon">
+              </div>
           </div>
-          <button type="submit" class="btn btn-primary">Create</button>
+          
       </form>
   </div>
   <script src="/static/js/app.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Voice Recording Functionality with Toggle Behavior
+    let mediaRecorder;
+    let audioChunks = [];
+    let isRecording = false;
+    const recordButton = document.getElementById('recordButton');
+    
+    recordButton.addEventListener('click', async () => {
+      if (!isRecording) {
+        // Start recording
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+          alert("Audio recording not supported in your browser.");
+          return;
+        }
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          mediaRecorder = new MediaRecorder(stream);
+          audioChunks = [];
+          mediaRecorder.addEventListener("dataavailable", event => {
+            audioChunks.push(event.data);
+          });
+          mediaRecorder.start();
+          recordButton.textContent = "Stop Recording";
+          isRecording = true;
+        } catch (err) {
+          console.error("Error accessing microphone:", err);
+          alert("Could not access microphone.");
+        }
+      } else {
+        // Stop recording
+        if (mediaRecorder && mediaRecorder.state !== "inactive") {
+          mediaRecorder.stop();
+          mediaRecorder.addEventListener("stop", () => {
+            const audioBlob = new Blob(audioChunks, { type: "audio/webm" });
+            const reader = new FileReader();
+            reader.readAsDataURL(audioBlob);
+            reader.onloadend = function() {
+              const base64Audio = reader.result;
+              document.getElementById('recordedAudio').value = base64Audio;
+              recordButton.textContent = "Hold to Record";
+              isRecording = false;
+            }
+          });
+        }
+      }
+    });
+    
+    // Geolocation Functionality
+    const geoButton = document.getElementById('geoButton');
+    geoButton.addEventListener('click', () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          document.getElementById('lat').value = position.coords.latitude;
+          document.getElementById('lon').value = position.coords.longitude;
+          alert("Location acquired!");
+        }, (error) => {
+          console.error("Error getting location:", error);
+          alert("Unable to retrieve your location.");
+        });
+      } else {
+        alert("Geolocation is not supported by your browser.");
+      }
+    });
+  </script>
 </body>
 </html>
