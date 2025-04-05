@@ -53,11 +53,11 @@
           {% for profile in profiles %}
           <div class="col-md-4">
             <div class="profile-card text-center" style="min-height: 350px; display: flex; flex-direction: column; justify-content: center;">
-              <h4>
+              <h5>
                 <a href="/profile/{{ profile._id }}" class="text-decoration-none text-dark">
-                  {{ profile.name }}
+                  {{ profile._id }}
                 </a>
-              </h4>
+              </h5>
               {% if profile.image_path %}
                 <img src="{{ url_for('static', filename='uploads/' ~ profile.image_path|basename) }}"
                      alt="Profile Image"
