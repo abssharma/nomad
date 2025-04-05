@@ -1,6 +1,6 @@
 /* Global Body Styles */
 body {
-    background-color: #f8f9fa;
+    background-color: #000000;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     margin: 0;
     padding: 0;
@@ -41,7 +41,7 @@ body {
   
   /* Dashboard Profile Card */
   .profile-card {
-    background-color: #ffffff;
+    background-color: #a6c6d8;
     border: 1px solid #e9ecef;
     border-radius: 8px;
     padding: 15px;
