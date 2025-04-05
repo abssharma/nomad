@@ -17,8 +17,8 @@ BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 # Set paths for templates and static files (assumes frontend/templates & frontend/static)
 TEMPLATES_PATH = os.path.join(BASE_DIR, "frontend", "templates")
 STATIC_PATH = os.path.join(BASE_DIR, "frontend", "static")
-# Set a separate path for recordings (assumes frontend/recordings)
-RECORDINGS_PATH = os.path.join(BASE_DIR, "frontend", "recordings")
+# Set a separate path for recordings (we'll store recordings inside the static folder)
+RECORDINGS_PATH = os.path.join(STATIC_PATH, "recordings")
 
 # Debug prints (optional)
 print("BASE_DIR:", BASE_DIR)
@@ -159,7 +159,7 @@ def create_profile(user_id):
         # Handle audio upload and transcription
         audio_path = None
         transcription = None
-        # Check if recorded audio is sent via the hidden field
+        # Check if recorded audio is sent via the hidden field "recordedAudio"
         recorded_audio = request.form.get("recordedAudio")
         if recorded_audio:
             try:
