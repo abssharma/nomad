@@ -3,7 +3,9 @@ import datetime
 import bcrypt
 import jwt
 import base64
-from flask import Flask, render_template, request, redirect, url_for, jsonify, make_response
+import subprocess
+import requests
+from flask import Flask, render_template, request, redirect, url_for, jsonify, make_response, send_from_directory
 from werkzeug.utils import secure_filename
 from functools import wraps
 
@@ -17,7 +19,7 @@ BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 # Set paths for templates and static files (assumes frontend/templates & frontend/static)
 TEMPLATES_PATH = os.path.join(BASE_DIR, "frontend", "templates")
 STATIC_PATH = os.path.join(BASE_DIR, "frontend", "static")
-# Set a separate path for recordings (we'll store recordings inside the static folder)
+# Recordings will be stored inside the static folder under "recordings"
 RECORDINGS_PATH = os.path.join(STATIC_PATH, "recordings")
 
 # Debug prints (optional)
@@ -80,12 +82,10 @@ def jwt_required(f):
 
 # --- Routes ---
 
-# Home / Landing Page
 @app.route("/")
 def index():
     return render_template("index.html")
 
-# Registration
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "GET":
@@ -105,7 +105,6 @@ def register():
         user_id = UserModel.create_user(email, hashed)
         return redirect(url_for("login"))
 
-# Login
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "GET":
@@ -119,21 +118,18 @@ def login():
 
         if bcrypt.checkpw(password.encode("utf-8"), user["password_hash"]):
             token = encode_jwt(str(user["_id"]))
-            # Set the token as an HTTP-only cookie and also return it in JSON
             response = make_response(jsonify({"token": token}))
             response.set_cookie("jwt", token, httponly=True)
             return response
         else:
             return "Invalid credentials", 401
 
-# Dashboard (Protected)
 @app.route("/dashboard")
 @jwt_required
 def dashboard(user_id):
     profiles = ProfileModel.get_profiles()
     return render_template("dashboard.html", profiles=profiles)
 
-# Create Profile (Protected)
 @app.route("/create-profile", methods=["GET", "POST"])
 @jwt_required
 def create_profile(user_id):
@@ -156,10 +152,8 @@ def create_profile(user_id):
             image_path = os.path.join(STATIC_PATH, "uploads", filename)
             image_file.save(image_path)
 
-        # Handle audio upload and transcription
+        # Handle audio upload; do not trigger transcription yet.
         audio_path = None
-        transcription = None
-        # Check if recorded audio is sent via the hidden field "recordedAudio"
         recorded_audio = request.form.get("recordedAudio")
         if recorded_audio:
             try:
@@ -175,13 +169,9 @@ def create_profile(user_id):
                 with open(audio_path, "wb") as f:
                     f.write(audio_data)
                 print("Saved recorded audio to:", audio_path)
-                transcription = audio_service.transcribe_audio(audio_path)
-                if transcription:
-                    description = f"{description}\n\n[Audio Transcription]: {transcription}"
             except Exception as e:
                 print("Error processing recorded audio:", e)
         else:
-            # Fall back: if a file was uploaded via the audio_file field
             audio_file = request.files.get("audio_file")
             if audio_file:
                 unique_audio_filename = f"{user_id}-{int(datetime.datetime.utcnow().timestamp())}.webm"
@@ -189,16 +179,31 @@ def create_profile(user_id):
                 os.makedirs(RECORDINGS_PATH, exist_ok=True)
                 audio_path = os.path.join(RECORDINGS_PATH, audio_filename)
                 audio_file.save(audio_path)
-                transcription = audio_service.transcribe_audio(audio_path)
-                if transcription:
-                    description = f"{description}\n\n[Audio Transcription]: {transcription}"
 
         profile_id = ProfileModel.create_profile(
             user_id, name, age, gender, location, lat, lon, description, image_path, audio_path
         )
         return redirect(url_for("dashboard"))
 
-# Search Profiles
+# Transcribe Route (Protected) - Triggered only when the "Transcribe" button is clicked
+@app.route("/transcribe/<profile_id>", methods=["POST"])
+@jwt_required
+def transcribe(user_id, profile_id):
+    profile = ProfileModel.get_profile_by_id(profile_id)
+    if not profile:
+        return jsonify({"error": "Profile not found"}), 404
+    if not profile.get("audio_path"):
+        return jsonify({"error": "No audio recording found"}), 400
+
+    # Construct full file path from the recordings folder.
+    full_audio_path = os.path.join(RECORDINGS_PATH, os.path.basename(profile["audio_path"]))
+    
+    # Use AudioService to transcribe the audio.
+    transcription_result = audio_service.transcribe_audio(full_audio_path)
+    if not transcription_result.get("transcription"):
+        return jsonify({"error": "Transcription failed"}), 500
+    return jsonify(transcription_result)
+
 @app.route("/search")
 def search():
     query = request.args.get("q")
@@ -207,7 +212,6 @@ def search():
     field = request.args.get("field", "name")
     order = request.args.get("order", "desc")
     filter_query = { field: {"$regex": query, "$options": "i"} }
-    # Import the underlying db connection from the ProfileModel module
     from models.profile_model import db
     results = list(db.profiles.find(filter_query))
     if order == "asc":
@@ -216,7 +220,6 @@ def search():
         results.sort(key=lambda p: p.get("created_at", datetime.datetime.min), reverse=True)
     return render_template("dashboard.html", profiles=results)
 
-# Profile Detail (Protected)
 @app.route("/profile/<profile_id>")
 @jwt_required
 def view_profile(user_id, profile_id):
