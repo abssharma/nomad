@@ -204,6 +204,28 @@ def transcribe(user_id, profile_id):
         return jsonify({"error": "Transcription failed"}), 500
     return jsonify(transcription_result)
 
+# Extract Route (Protected) - Navigates to a unique extraction view
+@app.route("/<profile_id>/extract/")
+@jwt_required
+def extract(user_id, profile_id):
+    profile = ProfileModel.get_profile_by_id(profile_id)
+    if not profile:
+        return "Profile not found", 404
+
+    # For demonstration, simulate extraction by returning key information.
+    extracted_info = {
+        "id": profile.get("_id", ""),
+        "age": profile.get("age", ""),
+        "location": profile.get("location", ""),
+        "gender": profile.get("gender", ""),
+        "extra_info": {
+            "medical_conditions": "None",
+            "possible_relatives": "Not found",
+            "problems_concerns": "No concerns"
+        }
+    }
+    return render_template("extract.html", profile=profile, extracted_info=extracted_info)
+
 @app.route("/search")
 def search():
     query = request.args.get("q")
