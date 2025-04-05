@@ -9,17 +9,11 @@
 <body>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container-fluid">
-          
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
-                  aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
           <div class="collapse navbar-collapse" id="navbarNav">
               <ul class="navbar-nav w-100 justify-content-around">
                   <li class="nav-item"><a class="nav-link" href="/login">LOGIN</a></li>
                   <li class="nav-item"><a class="nav-link" href="/register">REGISTER</a></li>
                   <li class="nav-item"><a class="nav-link" href="/dashboard">DASHBOARD</a></li>
-                  <li class="nav-item"><a class="nav-link" href="/create-profile">CREATE PROFILE</a></li>
                   <li class="nav-item"><a class="nav-link" href="#" id="logoutLink">LOGOUT</a></li>
               </ul>
           </div>
@@ -49,23 +43,31 @@
       
       <!-- Create Profile Button -->
       <div class="mb-4 text-center">
-          <a href="/create-profile" class="btn btn-primary btn-lg">CREATE PROFILE</a>
+          <a href="/create-profile" class="btn btn-primary btn-lg">CREATE A NEW PROFILE</a>
       </div>
       
+      <!-- Profiles Grid -->
       <div id="profiles" class="row">
           {% for profile in profiles %}
           <div class="col-md-4">
-            <div class="profile-card mb-4">
-              <h4>{{ profile.name }}</h4>
-              <p>Age: {{ profile.age }}</p>
-              <p>Gender: {{ profile.gender }}</p>
-              <p>Location: {{ profile.location }}</p>
-              <p>Description: {{ profile.description }}</p>
-              {% if profile.image_path %}
-                <img src="{{ url_for('static', filename='uploads/' ~ profile.image_path|basename) }}"
-                     alt="Profile Image" style="max-width: 100%;">
-              {% endif %}
-              <p class="mt-2 text-center"><a href="/profile/{{ profile._id }}" class="btn btn-outline-primary btn-sm">View Details</a></p>
+            <div class="profile-card text-center" style="min-height: 350px; display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <h4>{{ profile.name }}</h4>
+                <p>Age: {{ profile.age }}</p>
+                <p>Gender: {{ profile.gender }}</p>
+                <p>Location: {{ profile.location }}</p>
+                <p>Description: {{ profile.description }}</p>
+              </div>
+              <div>
+                {% if profile.image_path %}
+                  <img src="{{ url_for('static', filename='uploads/' ~ profile.image_path|basename) }}"
+                       alt="Profile Image"
+                       style="width: 250px; height: 250px; object-fit: cover;">
+                {% endif %}
+              </div>
+              <div>
+                <p class="mt-2"><a href="/profile/{{ profile._id }}" class="btn btn-outline-primary btn-sm">View Details</a></p>
+              </div>
             </div>
           </div>
           {% endfor %}
