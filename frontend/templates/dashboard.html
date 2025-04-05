@@ -23,12 +23,15 @@
       <div id="profiles">
           {% for profile in profiles %}
           <div class="profile-card">
+              {% if profile.image_path %}
+                <img src="{{ url_for('static', filename='uploads/' ~ profile.image_path|basename) }}"
+                alt="Profile Image" style="max-width: 150px;">
+              {% endif %}
               <h4>{{ profile.name }}</h4>
               <p>Age: {{ profile.age }}</p>
               <p>Gender: {{ profile.gender }}</p>
               <p>Location: {{ profile.location }}</p>
               <p>Description: {{ profile.description }}</p>
-              <!-- Add a link to view the full profile details -->
               <p><a href="/profile/{{ profile._id }}">View Details</a></p>
           </div>
           {% endfor %}
