@@ -9,17 +9,20 @@
 <body>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container-fluid">
-          <a class="navbar-brand" href="/">Nomad App</a>
-          <div class="collapse navbar-collapse">
-              <ul class="navbar-nav me-auto">
-                  <li class="nav-item"><a class="nav-link" href="/dashboard">Dashboard</a></li>
-                  <li class="nav-item"><a class="nav-link" href="#" id="logoutLink">Logout</a></li>
+        
+          <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav w-100 justify-content-around">
+                  <li class="nav-item"><a class="nav-link" href="/dashboard">DASHBOARD</a></li>
+                  <li class="nav-item"><a class="nav-link" href="#" id="logoutLink">LOGOUT</a></li>
               </ul>
           </div>
       </div>
   </nav>
   <div class="container mt-5">
-      <h2>Create Profile</h2>
+    <div class="text-center mb-4">
+        <h1 class="fw-bold">CREATE PROFILE VIEW</h1>
+    </div>    
+
       <div id="alert" class="alert d-none"></div>
       <form id="profileForm" enctype="multipart/form-data" method="POST" action="/create-profile">
           <div class="mb-3">
