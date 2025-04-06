@@ -67,7 +67,7 @@
     }).addTo(map);
 
     L.marker([lat, lon]).addTo(map)
-      .bindPopup("{{ profile._id }}")
+      .bindPopup("{{ profile.created_at }}")
       .openPopup();
 
     document.addEventListener("DOMContentLoaded", function () {
