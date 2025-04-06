@@ -14,6 +14,7 @@ It combines:
 
 - **AI-driven audio transcription**
 - **NLP-based data extraction**
+- **Machine learning–powered urgency prediction**
 
 > It’s a step toward dignity, awareness, and action.
 
@@ -26,6 +27,9 @@ It combines:
 
 - **AI-Powered Extraction**  
   Use advanced NLP models to convert speech into structured, actionable information.
+
+- **Urgency Prediction (ML)**  
+  Leverages an XGBoost model to estimate urgency level based on extracted profile features—helping responders prioritize critical cases in real-time.
 
 - **Secure Profile Storage**  
   Profiles are stored responsibly with care for privacy and consent, enabling support workers to track and act effectively.
@@ -68,6 +72,7 @@ And insight into action.
 | Frontend    | HTML, CSS, JavaScript, Leaflet.js    |
 | Backend     | Python, Flask                        |
 | NLP / AI    | OpenAI Whisper, Gemini API           |
+| ML Model    | XGBoost                              |
 | Database    | MongoDB Atlas                        |
 
 ---
