@@ -25,12 +25,12 @@
 
         <div class="details-container">
           {% if profile.created_at %}
-            <p class="log-time"><strong>Log:</strong> {{ profile.created_at }}</p>
+            <p class="log-time">{{ profile.created_at }}</p>
           {% endif %}
 
           {% if profile.audio_path %}
             <div class="audio-section">
-              <label><strong>Voice Recording:</strong></label>
+              <label><strong>voice recording:</strong></label>
               <audio controls>
                 <source src="{{ url_for('static', filename='recordings/' ~ profile.audio_path|basename) }}" type="audio/webm" />
                 Your browser does not support the audio element.
