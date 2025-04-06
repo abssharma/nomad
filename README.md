@@ -1,66 +1,90 @@
-**NOMAD**
-Not One More Abandoned & Displaced
+# **NOMAD**
+### *Not One More Abandoned & Displaced*
 
-A Promise to Listen. To Locate. To Care.
+**A promise to listen. To locate. To care.**  
 Because every person deserves to be found, to be heard, and to have a chance.
 
-**Overview**
-NOMAD is a powerful humanitarian platform designed to support efforts in identifying, understanding, and assisting homeless individuals through modern technology. By combining AI-driven audio transcription, NLP-based data extraction, and geospatial heatmap visualization, NOMAD serves as a crucial tool for those on the frontlines of social impact—police departments, NGOs, public health officials, and concerned citizens.
+---
 
-This isn’t just a web app.
-It’s a step toward dignity, awareness, and action.
+## Overview
 
-**Key Features**
-Voice-Based Profiling: Record or upload an individual’s voice and automatically extract key information such as name, conditions, concerns, and potential family links.
+**NOMAD** is a powerful humanitarian platform designed to assist in identifying, understanding, and supporting homeless individuals using modern technology.
 
-AI-Powered Extraction: Uses advanced NLP to distill meaningful, structured insights from unstructured speech.
+It combines:
 
-Heatmap Visualization: Global homelessness distribution mapped out using real data to aid outreach and intervention strategies.
+- **AI-driven audio transcription**
+- **NLP-based data extraction**
 
-Secure & Ethical Storage: Profiles are stored responsibly, ensuring privacy while enabling authorities to act on urgent needs.
+NOMAD serves as a critical tool for social responders—police, NGOs, public health teams, and social activists.
 
-Search & Insights: Query profiles by name, location, or concerns to prioritize aid and track ongoing situations.
+> It’s a step toward dignity, awareness, and action.
 
-**Who Is This For?**
-Police & Law Enforcement
-Track potentially missing individuals and reunite families.
+---
 
-NGOs & Humanitarian Workers
-Document stories, identify patterns, and offer personalized care.
+## Key Features
 
-Medical & Mental Health Outreach Teams
-Gain context on individual challenges before engagement.
+- **Voice-Based Profiling**  
+  Record or upload an individual’s voice and automatically extract key details—name, concerns, possible relatives, and more.
 
-Civic Planners & Social Activists
-Use heatmaps and data trends to allocate resources strategically.
+- **AI-Powered Extraction**  
+  Use advanced NLP models to convert speech into structured, actionable information.
 
-**The Impact**
-NOMAD bridges the silence.
-It turns lost voices into information.
-Information into insight.
+- **Secure Profile Storage**  
+  Profiles are stored responsibly with care for privacy and consent, enabling support workers to track and act effectively.
+
+---
+
+## Who Is This For?
+
+- **Law Enforcement**  
+  Identify and track missing persons. Help reconnect families.
+
+- **NGOs & Outreach Workers**  
+  Record stories, provide personalized care, and find patterns to improve interventions.
+
+- **Mental Health & Medical Teams**  
+  Gain insights into individuals before providing support, enabling trauma-informed care.
+
+- **Civic Planners & Social Policy Experts**  
+  Use maps and trend data to allocate shelter, rehab, or emergency resources strategically.
+
+---
+
+## Impact
+
+**NOMAD bridges silence.**  
+It turns anonymous voices into information.  
+Information into insight.  
 And insight into action.
 
-Whether it’s the whisper of a name in a recording or a pinpoint on a heatmap, every piece contributes to the larger mission:
-No one left behind. Not anymore.
+> Whether it's the whisper of a name in a recording or a dot on the map—  
+> every moment contributes to one mission:  
 
-**Tech Stack**
-Frontend: HTML, CSS, JavaScript, Leaflet.js
-Backend: Flask, Python
-AI/NLP: Whisper, Gemini API
-Database: MongoDB Atlas
-Mapping: Leaflet
 
-**Setup & Run**
+---
+
+## 🧪 Tech Stack
+
+| Layer       | Technology                          |
+|-------------|--------------------------------------|
+| Frontend    | HTML, CSS, JavaScript, Leaflet.js    |
+| Backend     | Python, Flask                        |
+| NLP / AI    | OpenAI Whisper, Gemini API           |
+| Database    | MongoDB Atlas                        |
+
+---
+
+## Getting Started
+
 git clone
 cd nomad
+
+# Create virtual environment
 python3 -m venv venv
 source venv/bin/activate
+
+# Install dependencies
 pip install -r requirements.txt
+
+# Run the server
 python backend/app.py
-
-NOMAD is a movement.
-To give the unheard a voice.
-To put the unseen on the map.
-To prove that no life is too small to matter.
-
-**We are the Change.**
