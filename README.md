@@ -87,5 +87,8 @@ source venv/bin/activate
 # Install dependencies
 pip install -r requirements.txt
 
-# Run the server
+# Run the ML model
+python -m backend.ml.train_model
+
+# In a separate terminal, Run the server
 python backend/app.py
