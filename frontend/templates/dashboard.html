@@ -22,7 +22,6 @@
     </div>
 
     <div id="profiles" class="row">
-      {% for profile in profiles %}
       <div class="col-md-4 mb-4 d-flex justify-content-center">
         <div class="profile-card">
           <p class="profile-id">
@@ -30,13 +29,10 @@
               {{ profile._id }}
             </a>
           </p>
-          {% if profile.image_path %}
           <img src="{{ url_for('static', filename='uploads/' ~ profile.image_path|basename) }}"
                alt="Profile Image">
-          {% endif %}
         </div>
       </div>
-      {% endfor %}
     </div>
   </main>
 
