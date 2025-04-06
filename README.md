@@ -72,7 +72,7 @@ And insight into action.
 
 ---
 
-## Getting Started
+# Getting Started
 
 git clone
 cd nomad
