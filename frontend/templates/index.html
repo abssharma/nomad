@@ -1,30 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Nomad App - Home</title>
-    <link rel="stylesheet" href="/static/css/style.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <div class="container-fluid">
-          <a class="navbar-brand" href="/">Nomad App</a>
-          <div class="collapse navbar-collapse">
-              <ul class="navbar-nav me-auto">
-                  <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
-                  <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
-                  <li class="nav-item"><a class="nav-link" href="/dashboard">Dashboard</a></li>
-                  <li class="nav-item"><a class="nav-link" href="/create-profile">Create Profile</a></li>
-              </ul>
-          </div>
-      </div>
-  </nav>
-  <div class="container mt-5">
-      <h1>Welcome to Nomad App</h1>
-      <p>This app helps you manage profiles. Use the navigation above to access features.</p>
-  </div>
-  <script src="/static/js/app.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <header>
+    <h1>nomad</h1>
+    <p class="subtitle">not one more abandoned & displaced</p>
+    <nav>
+      <a href="/register" class="nav-btn">join the mission</a>
+      <a href="/login" class="nav-btn">login</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="intro">
+      <h2>why nomad?</h2>
+      <p>
+        every day, countless lives go unheard. people lost to systems, missing from families, and forgotten by society. 
+        <strong>nomad gives them a voice</strong>—a chance to be seen, heard, and helped.
+      </p>
+    </section>
+
+    <section class="impact">
+      <h2>who can use it?</h2>
+      <ul>
+        <li><strong>police</strong> — identify missing persons and reunite them with loved ones.</li>
+        <li><strong>ngo</strong> — access mental health insights from transcribed interviews or audio clips.</li>
+        <li><strong>social workers</strong> — view location-based data on homelessness patterns.</li>
+        <li><strong>humanitarians & volunteers</strong> — understand and act on the needs of those forgotten.</li>
+      </ul>
+    </section>
+
+    <section class="hope">
+      <h2>this is more than tech</h2>
+      <p>
+        nomad empowers the voiceless, tracks neglected individuals, and builds bridges back to society.
+        From audio insights to geolocated heatmaps, this is data with a heartbeat.
+      </p>
+      <hr>
+      <p class="call">
+        <strong>a promise to listen. to find. to care.
+            because every life matters. every voice counts.</strong>
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 nomad. built for impact.</p>
+  </footer>
 </body>
 </html>
