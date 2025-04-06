@@ -58,7 +58,7 @@
             audioChunks.push(event.data);
           });
           mediaRecorder.start();
-          recordButton.textContent = "Stop Recording";
+          recordButton.textContent = "stop recording";
           isRecording = true;
         } catch (err) {
           console.error("Error accessing microphone:", err);
@@ -74,7 +74,7 @@
             reader.onloadend = function () {
               const base64Audio = reader.result;
               document.getElementById('recordedAudio').value = base64Audio;
-              recordButton.textContent = "Hold to Record";
+              recordButton.textContent = "press to record";
               isRecording = false;
             }
           });
