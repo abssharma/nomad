@@ -1,19 +1,28 @@
 import os
+import sys
+sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
+
 import datetime
 import bcrypt
 import jwt
 import base64
 import subprocess
 import requests
+import pandas as pd
+
 from flask import Flask, render_template, request, redirect, url_for, jsonify, make_response, send_from_directory
 from werkzeug.utils import secure_filename
 from functools import wraps
 
 from config import config
 from models.user_model import UserModel
+
 from models.profile_model import ProfileModel
 from services.audio_service import AudioService
+
 from result import extract_information
+from backend.ml.feature_engineering import prepare_features_for_prediction
+from backend.ml.model import predict_urgency as model_predict_urgency
 
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 TEMPLATES_PATH = os.path.join(BASE_DIR, "frontend", "templates")
@@ -75,9 +84,12 @@ def jwt_required(f):
         return f(user_id, *args, **kwargs)
     return decorated_function
 
+
+
 @app.route("/")
 def index():
     return render_template("index.html")
+
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -98,6 +110,7 @@ def register():
         user_id = UserModel.create_user(email, hashed)
         return redirect(url_for("login"))
 
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "GET":
@@ -117,11 +130,13 @@ def login():
         else:
             return "Invalid credentials", 401
 
+
 @app.route("/dashboard")
 @jwt_required
 def dashboard(user_id):
     profiles = ProfileModel.get_profiles()
     return render_template("dashboard.html", profiles=profiles)
+
 
 @app.route("/create-profile", methods=["GET", "POST"])
 @jwt_required
@@ -176,6 +191,7 @@ def create_profile(user_id):
         )
         return redirect(url_for("dashboard"))
 
+
 @app.route("/transcribe/<profile_id>", methods=["POST"])
 @jwt_required
 def transcribe(user_id, profile_id):
@@ -190,6 +206,7 @@ def transcribe(user_id, profile_id):
     if not transcription_result.get("transcription"):
         return jsonify({"error": "Transcription failed"}), 500
     return jsonify(transcription_result)
+
 
 @app.route("/<profile_id>/extract/")
 @jwt_required
@@ -211,7 +228,19 @@ def extract(user_id, profile_id):
             "possible_relatives": "Not specified",
             "problems_concerns": "Not specified"
         }
-    return render_template("extract.html", profile=profile, extracted_info=extracted_info)
+
+
+    structured_info = extracted_info.get("structured_info", {})
+    features = prepare_features_for_prediction(structured_info)
+    prediction = model_predict_urgency(features)
+
+    return render_template(
+        "extract.html",
+        profile=profile,
+        extracted_info=extracted_info,
+        prediction=prediction
+    )
+
 
 @app.route("/search")
 def search():
@@ -229,6 +258,7 @@ def search():
         results.sort(key=lambda p: p.get("created_at", datetime.datetime.min), reverse=True)
     return render_template("dashboard.html", profiles=results)
 
+
 @app.route("/profile/<profile_id>")
 @jwt_required
 def view_profile(user_id, profile_id):
@@ -236,6 +266,37 @@ def view_profile(user_id, profile_id):
     if not profile:
         return "Profile not found", 404
     return render_template("profile_detail.html", profile=profile)
+
+
+@app.route("/predict-urgency/<profile_id>", methods=["GET"])
+@jwt_required
+def predict_urgency(user_id, profile_id):
+    profile = ProfileModel.get_profile_by_id(profile_id)
+    if not profile:
+        return jsonify({"error": "Profile not found"}), 404
+
+    transcription_result = audio_service.transcribe_audio(
+        os.path.join(RECORDINGS_PATH, os.path.basename(profile["audio_path"]))
+    )
+    transcription_text = transcription_result.get("transcription")
+    if not transcription_text:
+        return jsonify({"error": "No transcription available"}), 500
+
+    extracted_info = extract_information(transcription_text)
+    structured = extracted_info.get("structured_info", {})
+
+    print("🧠 Structured info for prediction:", structured)
+
+    try:
+        features = prepare_features_for_prediction(structured)
+        print("📦 Final input to model:", features)
+
+        prediction = model_predict_urgency(features)
+    except Exception as e:
+        return jsonify({"error": f"Prediction failed: {str(e)}"}), 500
+
+    return jsonify(prediction)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
