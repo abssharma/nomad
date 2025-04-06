@@ -1,5 +1,3 @@
-# models/profile_model.py
-
 import datetime
 from pymongo import MongoClient
 from bson import ObjectId
@@ -22,7 +20,6 @@ class ProfileModel:
             "description": description,
             "image_path": image_path,
             "audio_path": audio_path,
-            # New date/time stamp
             "created_at": datetime.datetime.utcnow()
         }
         result = db.profiles.insert_one(profile)
