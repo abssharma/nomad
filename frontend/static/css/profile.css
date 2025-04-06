@@ -1,0 +1,136 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: #000000;
+    color: #ffffff;
+  }
+  
+  header {
+    background-color: #086e4f;
+    padding: 1.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  header h1 {
+    color: #50c878;
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0;
+  }
+  
+  .nav-links {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  .nav-btn {
+    color: #ffffff;
+    background-color: transparent;
+    border: 2px solid #50c878;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+  
+  .nav-btn:hover {
+    background-color: #50c878;
+    color: #000000;
+  }
+
+  main {
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .form-container {
+    width: 100%;
+    max-width: 600px;
+    background-color: #086e4f;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 10px rgba(80, 200, 120, 0.3);
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #50c878;
+  }
+  
+  input[type="file"],
+  input[type="text"],
+  input[type="hidden"] {
+    width: 100%;
+    padding: 0.6rem;
+    background-color: #000000;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  input:focus {
+    outline: 2px solid #50c878;
+  }
+  
+  .form-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  
+  .btn-green {
+    background-color: #50c878;
+    color: #000000;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-green:hover {
+    background-color: #3daa5e;
+    color: #ffffff;
+  }
+
+  .btn-black {
+    background-color: #000000;
+    color: #50c878;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-black:hover {
+    background-color: #ffffff;
+    color: #3daa5e;
+  }
+  
+  .alert {
+    background-color: #ff4c4c;
+    padding: 0.75rem;
+    color: #ffffff;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    font-weight: bold;
+  }
+  
+  .d-none {
+    display: none;
+  }
