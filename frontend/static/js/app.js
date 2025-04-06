@@ -1,19 +1,15 @@
-// Retrieve the JWT token from localStorage.
 function getJwtToken() {
   return localStorage.getItem('jwtToken');
 }
 
-// Save the JWT token to localStorage.
 function setJwtToken(token) {
   localStorage.setItem('jwtToken', token);
 }
 
-// Remove the JWT token from localStorage.
 function removeJwtToken() {
   localStorage.removeItem('jwtToken');
 }
 
-// Attach Authorization header to fetch options if a token exists.
 function withAuth(options = {}) {
   const token = getJwtToken();
   if (!options.headers) {
@@ -25,7 +21,6 @@ function withAuth(options = {}) {
   return options;
 }
 
-// Logout functionality: attach event to element with ID "logoutLink"
 document.addEventListener('DOMContentLoaded', function() {
   const logoutLink = document.getElementById('logoutLink');
   if (logoutLink) {
@@ -37,9 +32,6 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
-// ---------------------
-// Voice Recording Code (Toggle on click)
-// ---------------------
 let mediaRecorder;
 let audioChunks = [];
 let isRecording = false;
@@ -48,7 +40,6 @@ const recordButton = document.getElementById('recordButton');
 if (recordButton) {
   recordButton.addEventListener('click', async () => {
     if (!isRecording) {
-      // Start recording
       if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
         alert("Audio recording not supported in your browser.");
         return;
@@ -70,7 +61,6 @@ if (recordButton) {
         alert("Could not access microphone.");
       }
     } else {
-      // Stop recording
       if (mediaRecorder && mediaRecorder.state === "recording") {
         mediaRecorder.onstop = () => {
           const audioBlob = new Blob(audioChunks, { type: "audio/webm" });
@@ -98,9 +88,6 @@ if (recordButton) {
   });
 }
 
-// ---------------------
-// Geolocation Code
-// ---------------------
 const geoButton = document.getElementById('geoButton');
 if (geoButton) {
   geoButton.addEventListener('click', () => {
