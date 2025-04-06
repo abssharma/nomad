@@ -8,14 +8,12 @@ Because every person deserves to be found, to be heard, and to have a chance.
 
 ## Overview
 
-**NOMAD** is a powerful humanitarian platform designed to assist in identifying, understanding, and supporting homeless individuals using modern technology.
+**NOMAD** is a powerful humanitarian platform designed to assist in identifying, understanding, and supporting homeless individuals, using modern technology.
 
 It combines:
 
 - **AI-driven audio transcription**
 - **NLP-based data extraction**
-
-NOMAD serves as a critical tool for social responders—police, NGOs, public health teams, and social activists.
 
 > It’s a step toward dignity, awareness, and action.
 
