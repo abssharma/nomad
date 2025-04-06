@@ -1,0 +1,148 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: #000000;
+    color: #ffffff;
+  }
+  
+  header {
+    background-color: #086e4f;
+    padding: 1.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  header h1 {
+    color: #50c878;
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0;
+  }
+  
+  .nav-links {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  .nav-btn {
+    color: #ffffff;
+    background-color: transparent;
+    border: 2px solid #50c878;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+  
+  .nav-btn:hover {
+    background-color: #50c878;
+    color: #000000;
+  }
+  
+  main {
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .profile-card {
+    background-color: #086e4f;
+    border-radius: 16px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 1000px;
+    box-shadow: 0 4px 10px rgba(80, 200, 120, 0.3);
+  }
+  
+  .profile-body {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
+  
+  .map-container {
+    flex: 1 1 350px;
+  }
+  
+  #map {
+    height: 350px;
+    width: 100%;
+    border-radius: 10px;
+    border: none;
+  }
+  
+  .details-container {
+    flex: 2;
+  }
+  
+    .log-time {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    color: #50c878;
+    text-align: center;
+  }
+  
+  .audio-section label {
+    display: block;
+    text-align: center;
+    margin-bottom: 0.5rem;
+    color: #ffffff;
+  }
+  
+  .audio-section audio {
+    width: 100%;
+    margin-top: 0.5rem;
+    border-radius: 10px;
+  }
+  
+  .action-buttons {
+    display: flex;
+    gap: 14rem;
+    margin-top: 1rem;
+  }
+  
+  .btn-green {
+    background-color: #50c878;
+    color: #000000;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-green:hover {
+    background-color: #3daa5e;
+    color: #ffffff;
+  }
+  
+  .btn-outline {
+    background-color: transparent;
+    color: #50c878;
+    border: 2px solid #50c878;
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-outline:hover {
+    background-color: #50c878;
+    color: #000000;
+  }
+  
+  pre {
+    background-color: #000000;
+    border: 1px solid #50c878;
+    padding: 1rem;
+    border-radius: 6px;
+    margin-top: 1.5rem;
+    color: #50c878;
+    white-space: pre-wrap;
+  }
