@@ -2,35 +2,39 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>results for {{ profile._id }}</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/extract.css') }}">
 </head>
 <body>
-
   <header>
-    <h1>extracted results view</h1>
-    <div class="nav-links">
-      <a href="/dashboard" class="nav-btn">admin dashboard</a>
-      <a href="#" id="logoutLink" class="nav-btn">logout</a>
-    </div>
+    <h1>extracted profile view</h1>
+    <a href="/dashboard" class="nav-btn">admin dashboard</a>
   </header>
 
   <main>
     <div class="result-box">
-      <p><span class="label">name:</span> {{ extracted_info.name }}</p>
-      <p><span class="label">age:</span> {{ extracted_info.age }}</p>
-      <p><span class="label">gender:</span> {{ extracted_info.gender }}</p>
-      <p><span class="label">location:</span> {{ extracted_info.location }}</p>
-      <p><span class="label">miscellaneous relevant information:</span> {{ extracted_info.misc }}</p>
-      <hr>
-      <p><span class="label">medical conditions:</span> {{ extracted_info.extra_info.medical_conditions }}</p>
-      <p><span class="label">possible relatives:</span> {{ extracted_info.extra_info.possible_relatives }}</p>
-      <p><span class="label">concerns:</span> {{ extracted_info.extra_info.problems_concerns }}</p>
-      <hr>
-      <p><span class="label">here are some potential next steps:</span> {{ extracted_info.next_steps }}</p>
+      <section class="panel right-panel">
+          <p><span class="label">name:</span> {{ extracted_info.name }}</p>
+          <p><span class="label">age:</span> {{ extracted_info.age }}</p>
+          <p><span class="label">gender:</span> {{ extracted_info.gender }}</p>
+          <p><span class="label">location:</span> {{ extracted_info.location }}</p>
+          <p><span class="label">miscellaneous:</span> {{ extracted_info.misc }}</p>
+          <hr>
+          <p><span class="label">medical conditions:</span> {{ extracted_info.extra_info.medical_conditions }}</p>
+          <p><span class="label">possible relatives:</span> {{ extracted_info.extra_info.possible_relatives }}</p>
+          <p><span class="label">concerns:</span> {{ extracted_info.extra_info.problems_concerns }}</p>
+          <hr>
+          <p><span class="label">urgency score: </span> {{ prediction.urgency_score }}</p>
+          <p><span class="label">urgency level: </span>
+            {% if prediction.predicted_label == 1 %}
+              <span class="high">high</span>
+            {% else %}
+              <span class="low">low</span>
+            {% endif %}
+          </p>
+          <hr>
+          <p><span class="label">next steps:</span> {{ extracted_info.next_steps }}</p>
+      </section>
     </div>
   </main>
-
-  <script src="/static/js/app.js"></script>
 </body>
 </html>
