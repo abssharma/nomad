@@ -73,8 +73,6 @@ And insight into action.
 ---
 
 # Getting Started
-
-git clone
 cd nomad
 
 # Create virtual environment
