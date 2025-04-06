@@ -1,0 +1,125 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: #000000 !important;
+    color: #ffffff;
+  }
+  
+  header {
+    background-color: #086e4f;
+    padding: 1.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  header h1 {
+    color: #50c878;
+    font-size: 2.2rem;
+    font-weight: bold;
+    margin: 0;
+  }
+  
+  #logoutLink {
+    color: #ffffff;
+    background-color: transparent;
+    border: 2px solid #50c878;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    text-decoration: none;
+  }
+  
+  #logoutLink:hover {
+    background-color: #50c878;
+    color: #000000;
+  }
+  
+  .top-controls {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin: 2rem 0;
+    flex-wrap: wrap;
+  }
+  
+  .top-controls input {
+    background-color: #086e4f;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    color: #ffffff;
+    font-size: 1rem;
+    width: 280px;
+  }
+  
+  .top-controls input::placeholder {
+    color: #50c878;
+  }
+  
+  .top-controls input:focus {
+    outline: 2px solid #50c878;
+  }
+  
+  .btn-green {
+    background-color: #50c878;
+    color: #000000;
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+
+  }
+  
+  .btn-green:hover {
+    background-color: #3daa5e;
+    color: #ffffff;
+  }
+  
+  .btn-darkgreen {
+    background-color: #086e4f;
+    color: #50c878;
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+
+  }
+  
+  .btn-darkgreen:hover {
+    background-color: #065a3e;
+    color: #000000;
+  }
+  
+  .profile-card {
+    background-color: #086e4f;
+    border-radius: 16px;
+    padding: 1rem;
+    width: 100%;
+    max-width: 260px;
+    box-shadow: 0 4px 10px rgba(80, 200, 120, 0.3);
+    margin: auto;
+    text-align: center;
+  }
+  
+  .profile-id {
+    font-family: monospace;
+    color: #50c878;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    word-break: break-word;
+  }
+  
+  .profile-card img {
+    width: 100%;
+    height: 250px;
+    border-radius: 12px;
+    object-fit: cover;
+  }
