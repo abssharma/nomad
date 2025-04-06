@@ -1,74 +1,126 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Nomad App - Dashboard</title>
-    <link rel="stylesheet" href="/static/css/style.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <div class="container-fluid">
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: #000000 !important;
+    color: #ffffff;
+  }
+  
+  header {
+    background-color: #086e4f;
+    padding: 1.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  header h1 {
+    color: #50c878;
+    font-size: 2.2rem;
+    font-weight: bold;
+    margin: 0;
+  }
+  
+  #logoutLink {
+    color: #ffffff;
+    background-color: transparent;
+    border: 2px solid #50c878;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    text-decoration: none;
+  }
+  
+  #logoutLink:hover {
+    background-color: #50c878;
+    color: #000000;
+  }
+  
+  .top-controls {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin: 2rem 0;
+    flex-wrap: wrap;
+  }
+  
+  .top-controls input {
+    background-color: #086e4f;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    color: #ffffff;
+    font-size: 1rem;
+    width: 280px;
+  }
+  
+  .top-controls input::placeholder {
+    color: #50c878;
+  }
+  
+  .top-controls input:focus {
+    outline: 2px solid #50c878;
+  }
+  
+  .btn-green {
+    background-color: #50c878;
+    color: #000000;
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
 
-          <div class="collapse navbar-collapse" id="navbarNav">
-              <ul class="navbar-nav w-100 justify-content-around">
-                  <li class="nav-item"><a class="nav-link" href="/login">LOGIN</a></li>
-                  <li class="nav-item"><a class="nav-link" href="/register">REGISTER</a></li>
-                  <li class="nav-item"><a class="nav-link" href="/dashboard">DASHBOARD</a></li>
-                  <li class="nav-item"><a class="nav-link" href="/create-profile">CREATE PROFILE</a></li>
-                  <li class="nav-item"><a class="nav-link" href="#" id="logoutLink">LOGOUT</a></li>
-              </ul>
-          </div>
-      </div>
-  </nav>
-  <div class="container mt-5">
-      <div class="text-center mb-4">
-          <h1 class="fw-bold">DASHBOARD VIEW</h1>
-      </div>
-      
-      <!-- Updated Search Form -->
-      <form method="GET" action="/search" class="pt-4">
-          <div class="input-group justify-content-center">
-              <input type="text" name="q" class="form-control mb-0" required>
-              <select name="field" class="form-select w-auto">
-                  <option value="name">Name</option>
-                  <option value="gender">Gender</option>
-                  <option value="location">Location</option>
-              </select>
-              <select name="order" class="form-select w-auto">
-                  <option value="desc">Recent to Past</option>
-                  <option value="asc">Past to Recent</option>
-              </select>
-              <button class="btn btn-outline-secondary" type="submit">Search</button>
-          </div>
-      </form>
-      
-      <!-- Create Profile Button -->
-      <div class="mb-4 text-center">
-          <a href="/create-profile" class="btn btn-primary btn-lg">CREATE A NEW PROFILE</a>
-      </div>
-      
-      <!-- Profiles Grid -->
-      <div id="profiles" class="row">
-          {% for profile in profiles %}
-          <div class="col-md-4">
-            <div class="profile-card text-center" style="min-height: 350px; display: flex; flex-direction: column; justify-content: center;">
-              <h5>
-                <a href="/profile/{{ profile._id }}" class="text-decoration-none text-dark">
-                  {{ profile._id }}
-                </a>
-              </h5>
-              {% if profile.image_path %}
-                <img src="{{ url_for('static', filename='uploads/' ~ profile.image_path|basename) }}"
-                     alt="Profile Image"
-                     style="width: 250px; height: 250px; object-fit: cover;">
-              {% endif %}
-            </div>
-          </div>
-          {% endfor %}
-      </div>
-  </div>
-  <script src="/static/js/app.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+  }
+  
+  .btn-green:hover {
+    background-color: #3daa5e;
+    color: #ffffff;
+  }
+  
+  .btn-darkgreen {
+    background-color: #086e4f;
+    color: #50c878;
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+
+  }
+  
+  .btn-darkgreen:hover {
+    background-color: #065a3e;
+    color: #000000;
+  }
+  
+  .profile-card {
+    background-color: #086e4f;
+    border-radius: 16px;
+    padding: 1rem;
+    width: 100%;
+    max-width: 260px;
+    box-shadow: 0 4px 10px rgba(80, 200, 120, 0.3);
+    margin: auto;
+    text-align: center;
+  }
+  
+  .profile-id {
+    font-family: monospace;
+    color: #50c878;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    word-break: break-word;
+  }
+  
+  .profile-card img {
+    width: 100%;
+    height: 250px;
+    border-radius: 12px;
+    object-fit: cover;
+  }
+  
