@@ -3,7 +3,7 @@ from bson import ObjectId
 from config import config
 
 client = MongoClient(config.MONGO_URI)
-# Using the default database from the URI (or change to a specific one, e.g., client.nomad_db)
+
 db = client.get_default_database()
 
 class UserModel:
