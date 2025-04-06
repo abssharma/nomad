@@ -2,7 +2,7 @@ import pandas as pd
 import os
 from sklearn.model_selection import train_test_split
 from backend.ml.model import train_model
-from feature_engineering import prepare_features_for_prediction
+from backend.ml.feature_engineering import prepare_features_for_prediction
 
 DATA_PATH = os.path.join("backend", "ml", "data", "training_data.csv")
 
