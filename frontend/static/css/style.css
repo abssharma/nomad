@@ -6,19 +6,16 @@ body {
     padding: 0;
   }
   
-  /* Navbar */
   .navbar {
     margin-bottom: 20px;
   }
   
-  /* Container */
   .container {
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
   }
   
-  /* Form Styling */
   form {
     background-color: #ffffff;
     padding: 20px;
@@ -34,12 +31,10 @@ body {
     margin-bottom: 15px;
   }
   
-  /* Alert Messages */
   .alert {
     margin-top: 15px;
   }
   
-  /* Dashboard Profile Card */
   .profile-card {
     background-color: #a6c6d8;
     border: 1px solid #e9ecef;
@@ -48,11 +43,9 @@ body {
     margin-bottom: 15px;
   }
   
-  /* Footer (optional) */
   footer {
     text-align: center;
     padding: 10px;
     background-color: #e9ecef;
     margin-top: 20px;
   }
-  
