@@ -13,3 +13,4 @@ google-generativeai==0.3.2
 spacy==3.7.2
 scikit-learn>=1.3.0
 pandas
+bcrypt==5.0.0
